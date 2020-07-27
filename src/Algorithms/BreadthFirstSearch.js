@@ -1,19 +1,17 @@
-export const dijkstra = (grid, startNode, finishNode) => {
+export const breadthFirstSearch = (grid, startNode, finishNode) => {
     const visitedNodes = [];
+    let unvisitedNodes = getNodes(grid);
     startNode.distance = 0;
-    const unvisitedNodes = getNodes(grid);
     while (!!unvisitedNodes.length) {
         sortNodesByDistance(unvisitedNodes);
-        const nearestNode = unvisitedNodes.shift();
-        if (nearestNode.isWall) continue;
-        if (nearestNode.distance === Infinity) return visitedNodes;
-        nearestNode.isVisted = true;
-        visitedNodes.push(nearestNode);
-        if (nearestNode === finishNode) return visitedNodes;
-        updateUnvisitedNeighbors(grid, nearestNode);
+        const frontNode = unvisitedNodes.shift();
+        if (frontNode.isWall) continue;
+        frontNode.isVisited = true;
+        visitedNodes.push(frontNode);
+        if (frontNode === finishNode) return visitedNodes;
+        updateUnvisitedNeigbors(grid, frontNode);
     }
 }
-
 
 const getNodes = (grid) => {
     const allNodes = []
@@ -29,10 +27,10 @@ const sortNodesByDistance = (unvisitedNodes) => {
     unvisitedNodes.sort((firstNode, secondNode) => firstNode.distance - secondNode.distance);
 }
 
-const updateUnvisitedNeighbors = (grid, node) => {
-    const unvisitedNeighbors = getUnvisitedNeighbors(grid, node);
-    for (const neighbor of unvisitedNeighbors) {
-        neighbor.distance = node.distance + 1;
+const updateUnvisitedNeigbors = (grid, node) => {
+    const unvisitedNeighbors = getUnvisitedNeighbors(grid, node)
+    for (let neighbor of unvisitedNeighbors) {
+        neighbor.distance = 1;
         neighbor.previousNode = node;
     }
 }
@@ -41,19 +39,18 @@ const getUnvisitedNeighbors = (grid, node) => {
     const neighboringNodes = [];
     const { row, col } = node;
     if (row > 0) { neighboringNodes.push(grid[row - 1][col]) };
-    if (row < grid.length - 1) { neighboringNodes.push(grid[row + 1][col]) };
+    if (row < grid.length - 1) { neighboringNodes.push(grid[row + 1][col]) }
     if (col > 0) { neighboringNodes.push(grid[row][col - 1]) };
     if (col < grid[0].length - 1) { neighboringNodes.push(grid[row][col + 1]) };
-    return neighboringNodes.filter(neighbor => !neighbor.isVisted);
+    return neighboringNodes.filter(neighbor => !neighbor.isVisited);
 }
 
-
-export const shortestPath = (finishNode) => {
-    const nodesInShortestPath = [];
+export const pathToFinishNode = (finishNode) => {
+    const nodesInPath = [];
     let currentNode = finishNode;
     while (currentNode !== null) {
-        nodesInShortestPath.unshift(currentNode);
+        nodesInPath.unshift(currentNode);
         currentNode = currentNode.previousNode;
     }
-    return nodesInShortestPath;
+    return nodesInPath;
 }

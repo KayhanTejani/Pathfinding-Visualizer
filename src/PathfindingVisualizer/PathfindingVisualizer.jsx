@@ -2,7 +2,8 @@ import React, { Component } from "react";
 import Node from "./Node/Node";
 
 import "./PathfindingVisualizer.css";
-import { dijkstra } from "../Algorithms/Dijkstra";
+import { dijkstra, shortestPath } from "../Algorithms/Dijkstra";
+import { breadthFirstSearch, pathToFinishNode } from "../Algorithms/BreadthFirstSearch";
 
 export default class PathfindingVisualizer extends Component {
   constructor() {
@@ -20,10 +21,63 @@ export default class PathfindingVisualizer extends Component {
   dijkstraVisualization() {
     const { grid, startNode, finishNode } = this.state;
     const visitedNodesInOrder = dijkstra(grid, startNode, finishNode);
+    const shortestPathNodesOrder = shortestPath(finishNode);
+    this.dijkstraAnimation(visitedNodesInOrder, shortestPathNodesOrder);
   }
 
-  dijkstraAnimation() {
+  dijkstraAnimation(visitedNodesInOrder, shortestPathNodesOrder) {
+    for (let nodeIndex = 0; nodeIndex <= visitedNodesInOrder.length; nodeIndex++) {
+      if (nodeIndex === visitedNodesInOrder.length) {
+        setTimeout(() => {
+          this.dijkstraShortestPathAnimation(shortestPathNodesOrder);
+        }, 10 * nodeIndex);
+        return;
+      }
+      setTimeout(() => {
+        const node = visitedNodesInOrder[nodeIndex];
+        document.getElementById(`node-${node.row}-${node.col}`).className = 'node node-visited';
+      }, 10 * nodeIndex);
+    }
+  }
 
+  dijkstraShortestPathAnimation(shortestPathNodesOrder) {
+    for (let nodeIndex = 0; nodeIndex < shortestPathNodesOrder.length; nodeIndex++) {
+      setTimeout(() => {
+        const node = shortestPathNodesOrder[nodeIndex];
+        document.getElementById(`node-${node.row}-${node.col}`).className = "node node-shortest-path";
+      }, 50 * nodeIndex);
+    }
+  }
+
+  breadthFirstSearchVisualization() {
+    const { grid, startNode, finishNode } = this.state;
+    const visitedNodesInOrder = breadthFirstSearch(grid, startNode, finishNode);
+    const pathToFinishOrder = pathToFinishNode(finishNode);
+    this.breadthFirstSearchAnimation(visitedNodesInOrder, pathToFinishOrder);
+  }
+
+  breadthFirstSearchAnimation(visitedNodesInOrder, pathToFinishOrder) {
+    for (let nodeIndex = 0; nodeIndex <= visitedNodesInOrder.length; nodeIndex++) {
+      if (nodeIndex === visitedNodesInOrder.length) {
+        setTimeout(() => {
+          this.breadthFirstSearchPathAnimation(pathToFinishOrder)
+        }, 10 * nodeIndex);
+        return;
+      }
+      setTimeout(() => {
+        const node = visitedNodesInOrder[nodeIndex];
+        document.getElementById(`node-${node.row}-${node.col}`).className = "node node-visited";
+      }, 10 * nodeIndex);
+    }
+  }
+
+  breadthFirstSearchPathAnimation(pathToFinishOrder) {
+    for (let nodeIndex = 0; nodeIndex < pathToFinishOrder.length; nodeIndex++) {
+      setTimeout(() => {
+        const node = pathToFinishOrder[nodeIndex];
+        document.getElementById(`node-${node.row}-${node.col}`).className = "node node-shortest-path";
+      }, 50 * nodeIndex);
+    }
   }
 
   componentDidMount() {
@@ -82,7 +136,10 @@ export default class PathfindingVisualizer extends Component {
     return (
       <>
         <button onClick={() => this.dijkstraVisualization()}>
-          Visualize Dijstra's Algorithm
+          Visualize Dijkstra's Algorithm
+        </button>
+        <button onClick={() => this.breadthFirstSearchVisualization()}>
+          Visualize Breadth First Search
         </button>
         <div className="grid">
           {grid.map((row, rowIndex) => {
