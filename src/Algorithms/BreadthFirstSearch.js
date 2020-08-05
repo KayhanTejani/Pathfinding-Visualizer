@@ -1,6 +1,6 @@
 export const breadthFirstSearch = (grid, startNode, finishNode) => {
     const visitedNodes = [];
-    let unvisitedNodes = getNodes(grid);
+    const unvisitedNodes = getNodes(grid);
     startNode.distance = 0;
     while (!!unvisitedNodes.length) {
         sortNodesByDistance(unvisitedNodes);

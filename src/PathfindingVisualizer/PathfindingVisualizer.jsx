@@ -4,6 +4,7 @@ import Node from "./Node/Node";
 import "./PathfindingVisualizer.css";
 import { dijkstra, shortestPath } from "../Algorithms/Dijkstra";
 import { breadthFirstSearch, pathToFinishNode } from "../Algorithms/BreadthFirstSearch";
+import { depthFirstSearch, pathToFinishNodeDFS } from "../Algorithms/DepthFirstSearch";
 
 export default class PathfindingVisualizer extends Component {
   constructor() {
@@ -80,6 +81,38 @@ export default class PathfindingVisualizer extends Component {
     }
   }
 
+  depthFirstSearchVisualization() {
+    const { grid, startNode, finishNode } = this.state;
+    const visitedNodesInOrder = depthFirstSearch(grid, startNode, finishNode);
+    console.log(typeof visitedNodesInOrder);
+    const pathToFinishOrder = pathToFinishNodeDFS(finishNode);
+    this.depthFirstSearchAnimation(visitedNodesInOrder, pathToFinishOrder);
+  }
+
+  depthFirstSearchAnimation(visitedNodesInOrder, pathToFinishOrder) {
+    for (let nodeIndex = 0; nodeIndex <= visitedNodesInOrder.length; nodeIndex++) {
+      if (nodeIndex === visitedNodesInOrder.length) {
+        setTimeout(() => {
+          this.depthFirstSearchPathAnimation(pathToFinishOrder)
+        }, 10 * nodeIndex);
+        return;
+      }
+      setTimeout(() => {
+        const node = visitedNodesInOrder[nodeIndex];
+        document.getElementById(`node-${node.row}-${node.col}`).className = "node node-visited";
+      }, 10 * nodeIndex);
+    }
+  }
+
+  depthFirstSearchPathAnimation(pathToFinishOrder) {
+    for (let nodeIndex = 0; nodeIndex < pathToFinishOrder.length; nodeIndex++) {
+      setTimeout(() => {
+        const node = pathToFinishOrder[nodeIndex];
+        document.getElementById(`node-${node.row}-${node.col}`).className = "node node-shortest-path";
+      }, 50 * nodeIndex);
+    }
+  }
+
   componentDidMount() {
     const newGrid = createGrid();
     this.setState({ grid: newGrid });
@@ -140,6 +173,9 @@ export default class PathfindingVisualizer extends Component {
         </button>
         <button onClick={() => this.breadthFirstSearchVisualization()}>
           Visualize Breadth First Search
+        </button>
+        <button onClick={() => this.depthFirstSearchVisualization()}>
+          Visualize Depth First Search
         </button>
         <div className="grid">
           {grid.map((row, rowIndex) => {
