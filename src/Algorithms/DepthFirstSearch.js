@@ -6,12 +6,12 @@ export const depthFirstSearch = (grid, startNode, finishNode) => {
     while (!!nodeStack.length) {
         const currentNode = nodeStack.pop();
         visitedNodes.push(currentNode);
-        if (currentNode.isWall) continue;
+        if (currentNode === finishNode) return visitedNodes;
         const unvisitedNeighbors = getUnvisitedNeighbors(grid, currentNode);
         for (const node of unvisitedNeighbors) {
+            if (node.isWall) continue;
             node.isVisited = true;
             nodeStack.push(node);
-            if (node === finishNode) return visitedNodes;
         }
     }
     return visitedNodes;
@@ -30,8 +30,8 @@ const getUnvisitedNeighbors = (grid, node) => {
 const updateUnvisitedNeighbors = (grid, node) => {
     const neighboringNodes = [];
     const { row, col } = node;
-    if (row > 0) { neighboringNodes.push(grid[row - 1][col]) };
     if (col > 0) { neighboringNodes.push(grid[row][col - 1]) };
+    if (row > 0) { neighboringNodes.push(grid[row - 1][col]) };
     if (row < grid.length - 1) { neighboringNodes.push(grid[row + 1][col]) };
     if (col < grid[0].length - 1) { neighboringNodes.push(grid[row][col + 1]) };
     return neighboringNodes.filter(neighbor => !neighbor.isVisited);
