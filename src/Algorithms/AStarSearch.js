@@ -1,29 +1,3 @@
-// export const aStarSearch = (grid, startNode, finishNode) => {
-//     const openNodes = [];
-//     const closedNodes = [];
-//     let currentNode = startNode;
-//     while (currentNode !== finishNode) {
-//         const unvisitedNeighbors = getUnvisitedNeighbors(grid, currentNode);
-//         for (const neighbor of unvisitedNeighbors) {
-//             if (!openNodes.includes(neighbor) && !closedNodes.includes(neighbor)) {
-//                 openNodes.push(neighbor);
-//                 const { row, col, distance } = neighbor;
-//                 const { finishRow, finishCol } = finishNode;
-//                 neighbor.heuristic = Math.abs(finishCol - col) + Math.abs(finishRow - row);
-//                 const tempFvalue = distance + neighbor.heuristic;
-//                 if (neighbor.fValue === Infinity || tempFvalue < neighbor.fValue) {
-//                     neighbor.fValue = tempFvalue;
-//                     neighbor.previousNode = currentNode;
-//                 }
-//             }
-//         }
-//         closedNodes.push(currentNode);
-//         sortNodesByFvalue(openNodes);
-//         currentNode = openNodes.shift();
-//     }
-//     return closedNodes;
-// }
-
 export const aStarSearch = (grid, startNode, finishNode) => {
     const openNodes = [];
     const closedNodes = [];
@@ -70,7 +44,7 @@ const getUnvisitedNeighbors = (grid, node) => {
     const unvisitedNeighbors = updateUnvisitedNeighbors(grid, node)
     for (const neighbor of unvisitedNeighbors) {
         neighbor.distance = node.distance + 1;
-        // neighbor.previousNode = node;
+        neighbor.previousNode = node;
     }
     return unvisitedNeighbors;
 }
