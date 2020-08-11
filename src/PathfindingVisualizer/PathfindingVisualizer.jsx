@@ -5,6 +5,7 @@ import "./PathfindingVisualizer.css";
 import { dijkstra, shortestPath } from "../Algorithms/Dijkstra";
 import { breadthFirstSearch, pathToFinishNode } from "../Algorithms/BreadthFirstSearch";
 import { depthFirstSearch, pathToFinishNodeDFS } from "../Algorithms/DepthFirstSearch";
+import { aStarSearch, shortestPathAStar } from "../Algorithms/AStarSearch";
 
 export default class PathfindingVisualizer extends Component {
   constructor() {
@@ -113,6 +114,39 @@ export default class PathfindingVisualizer extends Component {
     }
   }
 
+  aStarSearchVisualization() {
+    const { grid, startNode, finishNode } = this.state;
+    const visitedNodesInOrder = aStarSearch(grid, startNode, finishNode);
+    const pathToFinishNode = shortestPathAStar(finishNode);
+    this.aStarSearchAnimation(visitedNodesInOrder, pathToFinishNode);
+    // this.aStarSearchPathAnimation(pathToFinishNode);
+  }
+
+  aStarSearchAnimation(visitedNodesInOrder, pathToFinishNode) {
+    for (let nodeIndex = 0; nodeIndex <= visitedNodesInOrder.length; nodeIndex++) {
+      if (nodeIndex === visitedNodesInOrder.length) {
+        setTimeout(() => {
+          this.aStarSearchPathAnimation(pathToFinishNode)
+        }, 10 * nodeIndex);
+        return;
+      }
+      setTimeout(() => {
+        const node = visitedNodesInOrder[nodeIndex];
+        console.log(node);
+        document.getElementById(`node-${node.row}-${node.col}`).className = "node node-visited";
+      }, 10 * nodeIndex);
+    }
+  }
+
+  aStarSearchPathAnimation(pathToFinishNode) {
+    for (let nodeIndex = 0; nodeIndex < pathToFinishNode.length; nodeIndex++) {
+      setTimeout(() => {
+        const node = pathToFinishNode[nodeIndex];
+        document.getElementById(`node-${node.row}-${node.col}`).className = "node node-shortest-path";
+      }, 50 * nodeIndex);
+    }
+  }
+
   componentDidMount() {
     const newGrid = createGrid();
     this.setState({ grid: newGrid });
@@ -177,6 +211,9 @@ export default class PathfindingVisualizer extends Component {
         <button onClick={() => this.depthFirstSearchVisualization()}>
           Visualize Depth First Search
         </button>
+        <button onClick={() => this.aStarSearchVisualization()}>
+          Visualize A* Search
+        </button>
         <div className="grid">
           {grid.map((row, rowIndex) => {
             return (
@@ -227,6 +264,8 @@ const createNode = (row, col) => {
     isStart: false,
     isFinish: false,
     distance: Infinity,
+    heuristic: Infinity,
+    fValue: Infinity,
     isVisited: false,
     isWall: false,
     previousNode: null
