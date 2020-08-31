@@ -267,6 +267,7 @@ const createNode = (row, col) => {
     heuristic: Infinity,
     fValue: Infinity,
     isVisited: false,
+    marked: false,
     isWall: false,
     previousNode: null
   }

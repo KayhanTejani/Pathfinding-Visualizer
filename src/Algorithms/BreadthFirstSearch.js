@@ -1,41 +1,32 @@
 export const breadthFirstSearch = (grid, startNode, finishNode) => {
     const visitedNodes = [];
-    const unvisitedNodes = getNodes(grid);
-    startNode.distance = 0;
-    while (!!unvisitedNodes.length) {
-        sortNodesByDistance(unvisitedNodes);
-        const frontNode = unvisitedNodes.shift();
+    const nodeQueue = [];
+    nodeQueue.push(startNode);
+    while (!!nodeQueue.length) {
+        const frontNode = nodeQueue.shift();
         if (frontNode.isWall) continue;
         frontNode.isVisited = true;
         visitedNodes.push(frontNode);
         if (frontNode === finishNode) return visitedNodes;
-        updateUnvisitedNeigbors(grid, frontNode);
-    }
-}
-
-const getNodes = (grid) => {
-    const allNodes = []
-    for (const row of grid) {
-        for (const node of row) {
-            allNodes.push(node);
+        const unvisitedNeighbors = getUnvisitedNeighbors(grid, frontNode);
+        for (const node of unvisitedNeighbors) {
+            if (node.marked === false) {
+                node.marked = true;
+                nodeQueue.push(node);
+            }
         }
-    }
-    return allNodes;
-}
-
-const sortNodesByDistance = (unvisitedNodes) => {
-    unvisitedNodes.sort((firstNode, secondNode) => firstNode.distance - secondNode.distance);
-}
-
-const updateUnvisitedNeigbors = (grid, node) => {
-    const unvisitedNeighbors = getUnvisitedNeighbors(grid, node)
-    for (let neighbor of unvisitedNeighbors) {
-        neighbor.distance = 1;
-        neighbor.previousNode = node;
     }
 }
 
 const getUnvisitedNeighbors = (grid, node) => {
+    const unvisitedNeighbors = updateUnvisitedNeighbors(grid, node)
+    for (let neighbor of unvisitedNeighbors) {
+        neighbor.previousNode = node;
+    }
+    return unvisitedNeighbors
+}
+
+const updateUnvisitedNeighbors = (grid, node) => {
     const neighboringNodes = [];
     const { row, col } = node;
     if (row > 0) { neighboringNodes.push(grid[row - 1][col]) };
