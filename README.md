@@ -6,7 +6,7 @@ View the website [here](https://kayhantejani.github.io/Pathfinding-Visualizer/)
 
 ## Why build a visualizer?
 
-Graph algorithms are some of the most important algorithms taught in any algorithms course. They also tend to be one of the more challenging algorithms to understand. This visualizer was built with the goal to simplify how these algorithms run and which algorithms are best suited to different scenarios, making it easier to study their use and efficiency.
+Graph algorithms are some of the most important algorithms taught in any algorithms course. They also tend to be some of the more challenging algorithms to understand. This visualizer was built with the goal of simplifying how these algorithms run and which algorithms are best suited to different scenarios, making it easier to study their use and efficiency.
 
 ### `npm start`
 
