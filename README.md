@@ -1,8 +1,12 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Pathfinding Algorithms Visualizer
 
-## Available Scripts
+A webapp built with React that visualizes various pathfinding algorithms.
 
-In the project directory, you can run:
+View the website [here](https://kayhantejani.github.io/Pathfinding-Visualizer/)
+
+## Why build a visualizer?
+
+Graph algorithms are one of the most important algorithms taught in any algorithms course. They also tend to be one of the more challenging algorithms to understand. This visualizer was built with the goal to simplify how these algorithms run and which algorithms are best suited to different scenarios, making it easier to study their use and efficiency.
 
 ### `npm start`
 
