@@ -1,6 +1,6 @@
 ## Pathfinding Algorithms Visualizer
 
-A webapp built with React that visualizes various pathfinding algorithms.
+A website built with React that visualizes various pathfinding algorithms.
 
 View the website [here](https://kayhantejani.github.io/Pathfinding-Visualizer/)
 
