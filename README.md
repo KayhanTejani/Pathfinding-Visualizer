@@ -10,6 +10,6 @@ Graph algorithms are some of the most important algorithms taught in any algorit
 
 **This website was built with a few specific goals:**
 
-* To simplify how these algorithms work in real time
+* To simplify how these algorithms work while studying them
 * To understand which algorithms are appropriate for different scenarios
 * To visualize their difference and efficiency
